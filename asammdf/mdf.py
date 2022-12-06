@@ -232,8 +232,13 @@ class MDF:
 
         if name:
             if is_file_like(name):
-
-                if isinstance(name, BytesIO):
+                
+                from fsspec.spec import AbstractBufferedFile
+                if isinstance(name, AbstractBufferedFile):
+                    original_name = None
+                    file_stream = name
+                    do_close = False
+                elif isinstance(name, BytesIO):
                     original_name = None
                     file_stream = name
                     do_close = False
